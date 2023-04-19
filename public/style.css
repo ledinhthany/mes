@@ -1,0 +1,121 @@
+.wecom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgb(255, 255, 255);
+    
+}
+  #chat-form input{
+    width: 99%;
+    height: 40px;
+    font-size: 20px;
+
+    border: none;
+   
+  }
+  #chat-form button{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    
+  }
+  .message-item {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #ffffff4d;
+
+
+  }
+  .username{
+    font-size: 30px;
+  }
+  .tin-nhan{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  #messages li {
+    padding: 5px 10px;
+    font-size: 20px;
+
+    list-style: none;
+    margin-bottom: 10px;
+  }
+  *{
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+}
+.mess{
+    background-color: rgb(68, 29, 100);
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+}
+.hear nav{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: space-around;
+}
+.hear ul{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.hear li{
+    margin-top: 10px;
+    width: 90px;
+    height: 20px;
+    background-color: aqua;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+}
+.hear a{
+    text-decoration: none;
+}
+.nguoi-dung{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: #303030;
+}
+
+.avatar img{
+    width: 45px;
+    height: 45px;
+    border-radius: 30px;
+    object-fit: cover;
+}
+.thong-tin-nguoi-dung{
+    margin-top: 50px;
+    width: 350px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    background-color: #303030;
+    justify-content: center;
+
+    border: none;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.75) 1px 4px 15px 8px inset;
+    
+}
+#message-undefined{
+    margin-top: 10px;
+    position: absolute;
+    padding: 10px 20px;
+    background-color: #ffffff4d;
+}

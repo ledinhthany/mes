@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@emoji-mart/css/dist/emoji-mart.css" />
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+<body>
+
+  <!-- <header class="hear">
+    <nav>
+        <ul>
+            <li><a href="">Tim Kiem</a></li>
+            <li><a href="">Dang Xuat</a></li>
+        </ul>
+    </nav>
+</header> -->
+<section class="mess">
+  <div class="nguoi-dung">
+    <h1>Messenger</h1>
+    <a href="zoom.html">Call</a>
+    <div class="thong-tin-nguoi-dung">
+      <div class="avatar">
+        <img src="avatar.jpg" alt="">
+      </div>
+      <div class="ten">
+        <h2></h2>
+      </div>
+    </div>
+  </div>
+  <div class="tin-nhan">
+    
+    <ul id="messages"></ul>
+
+    
+    <form id="chat-form">
+      <input type="text" id="chat-mes">
+      <button id="send-chat">Gui</button>
+    </form>
+  </div>
+</section>
+
+</body>
+<style>
+  
+</style>
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emoji-mart/react@3.0.0/dist/umd/emoji-mart.min.js"></script>
+<script>
+const socket = io();
+const chatForm = document.querySelector('#chat-form');
+const chatMes = document.querySelector('#chat-mes');
+const messages = document.querySelector('#messages');
+const imageForm = document.querySelector('#image-form');
+const imageUpload = document.querySelector('#image-upload');
+const createChatForm = document.querySelector('#create-chat-form');
+const userList = document.querySelector('#user-list');
+const emojiList = document.querySelector('#emoji-list');
+const emojiButton = document.querySelector('#emoji-button');
+
+
+// Danh sách người dùng đang truy cập
+let users = [];
+
+// Kiểm tra xem tên người dùng đã được lưu trong localStorage hay chưa
+let username = localStorage.getItem('username');
+if (!username) {
+  // Nếu chưa, hiển thị phần nhập tên
+  username = prompt('Vui lòng nhập tên của bạn:');
+  localStorage.setItem('username', username);
+}
+
+// Hiển thị tên người dùng lên trang
+const userItem = document.createElement('li');
+userItem.textContent = `Chào mừng ${username} đến với kênh chat thế giới!`;
+userItem.setAttribute('class', 'wecom');
+messages.appendChild(userItem);
+
+// Hiển thị thông tin người dùng
+const userInfo = document.querySelector('.thong-tin-nguoi-dung');
+const userName = document.querySelector('.thong-tin-nguoi-dung h2');
+userName.textContent = username;
+userInfo.classList.add('hien-thi');
+
+// Thêm người dùng vào danh sách
+socket.emit('user-joined', username);
+
+// Thêm nút "Đổi tên"
+const changeNameButton = document.createElement('button');
+changeNameButton.textContent = 'Đổi tên';
+changeNameButton.addEventListener('click', () => {
+  const newName = prompt('Vui lòng nhập tên mới của bạn Load lại trang để cập nhật tên mới');
+  if (newName) {
+    localStorage.setItem('username', newName);
+    userName.textContent = newName;
+    socket.emit('user-changed-name', newName);
+  }
+});
+userInfo.appendChild(changeNameButton);
+
+
+// Gửi tin nhắn của người dùng đến server
+chatForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const message = chatMes.value;
+  if (message.trim() !== '') {
+    socket.emit('user-chat', {username: username, message: message});
+    chatMes.value = '';
+  }
+});
+
+// Nhận tin nhắn từ server và hiển thị lên trang
+socket.on('user-chat', (data) => {
+  const chatItem = document.createElement('li');
+  chatItem.classList.add('message-item'); // thêm class cho thẻ li
+
+  chatItem.innerHTML = `<span class="username">${data.username}: </span> <span class="tn">${data.message}</span>`;
+  messages.appendChild(chatItem);
+});
+
+socket.on('connect', () => {
+  console.log('Connected to server');
+});
+
+// Hiển thị các tin nhắn cũ khi kết nối mới
+socket.on('load-old-messages', (messages) => {
+  messages.forEach((message) => {
+    const chatItem = document.createElement('li');
+    chatItem.innerHTML = `<span class="username">${data.username}</span> ${data.message}`;
+
+    messages.appendChild(chatItem);
+  });
+});
+
+// Thêm người dùng mới vào danh sách
+socket.on('user-joined', (username) => {
+  users.push(username);
+
+  // Tạo phần tử thông tin người dùng mới
+  const newUserInfo = document.createElement('div');
+  newUserInfo.classList.add('thong-tin-nguoi-dung');
+
+
+
+
+
+
+  newAvatar.appendChild(newImg);
+  newUserInfo.appendChild(newAvatar);
+
+  // Tạo phần tử tên của người dùng mới
+  const newTen = document.createElement('div');
+  newTen.classList.add('ten');
+  const newH2 = document.createElement('h2');
+  newH2.textContent = username;
+  newTen.appendChild(newH2);
+  newUserInfo.appendChild(newTen);
+
+  // Tìm vị trí để chèn thông tin người dùng mới vào danh sách
+  let currentUser = userInfo.nextSibling;
+  while (currentUser) {
+    if (currentUser.classList && currentUser.classList.contains('thong-tin-nguoi-dung')) {
+      if (currentUser.querySelector('h2').textContent.localeCompare(username) > 0) {
+        break;
+      }
+    }
+    currentUser = currentUser.nextSibling;
+  }
+
+  // Chèn thông tin người dùng mới vào danh sách
+  userInfo.parentNode.insertBefore(newUserInfo, currentUser);
+});
+
+
+
+
+
+  </script>
+   <script type="module">
+    import data from '@emoji-mart/data';
+    import Picker from '@emoji-mart/react';
+    import React from 'react';
+    import ReactDOM from 'react-dom';
+    import Picker from '@emoji-mart/react';
+    import data from '@emoji-mart/data';
+    import '@emoji-mart/css/emoji-mart.css';
+
+function App() {
+  return (
+    <div>
+      <Picker set='emojione' data={data} onSelect={(emoji) => console.log(emoji)} />
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
+
+
+    const chatContainer = document.getElementById('chat-container');
+
+    const chatMessage = document.getElementById('chat-mes');
+
+
+    const picker = new Picker({
+      data: data,
+      onSelect: (emoji) => {
+        chatMessage.value += emoji.native;
+      },
+    });
+
+    emojiButton.addEventListener('click', () => {
+      picker.togglePicker(emojiButton);
+    });
+
+    chatForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const message = chatMessage.value.trim();
+      if (message === '') {
+        return;
+      }
+      const chatItem = document.createElement('div');
+      chatItem.classList.add('chat-item');
+      chatItem.textContent = message;
+      chatContainer.appendChild(chatItem);
+      chatMessage.value = '';
+    });
+  </script>
+
+    
+</html>
